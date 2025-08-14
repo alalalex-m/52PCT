@@ -13,6 +13,7 @@ export const PREFERENCE_CATEGORIES = [
   { id: "movie", label: "电影", icon: "Film" },
   { id: "book", label: "书籍", icon: "BookOpen" },
   { id: "color", label: "颜色", icon: "Palette" },
+  { id: "store", label: "店铺", icon: "Store" },
   { id: "other", label: "其他", icon: "Sparkles" },
 ] as const;
 
@@ -36,6 +37,7 @@ export interface Preference {
   label: string;
   note?: string;
   importance: number; // 1-5
+  liked: boolean; // true表示喜欢，false表示不喜欢
 }
 
 // 链接
@@ -88,13 +90,15 @@ export const demoData = (): DB => ({
           label: "寿司",
           note: "特别喜欢三文鱼",
           importance: 4,
+          liked: true,
         },
         { 
           id: "pref-2", 
           category: "drink", 
           label: "燕麦拿铁", 
           note: "不加糖", 
-          importance: 5 
+          importance: 5,
+          liked: true,
         },
         {
           id: "pref-3",
@@ -102,6 +106,15 @@ export const demoData = (): DB => ({
           label: "祖马龙海盐与鼠尾草",
           note: "日常香水",
           importance: 3,
+          liked: true,
+        },
+        {
+          id: "pref-4",
+          category: "food",
+          label: "榴莲",
+          note: "闻到味道就会头晕",
+          importance: 5,
+          liked: false,
         },
       ],
       events: [

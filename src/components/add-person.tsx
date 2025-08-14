@@ -46,16 +46,30 @@ export function AddPerson({ onAdd }: AddPersonProps) {
     setOpen(false);
   };
 
+  // 处理图片上传并调整大小
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        setPhotoUrl(event.target?.result as string);
-        setEmoji(""); // 清空表情符号，使用照片
-      };
-      reader.readAsDataURL(file);
+    if (!file) return;
+    
+    // 检查文件大小，限制为1MB
+    if (file.size > 1024 * 1024) {
+      alert("图片太大，请选择小于1MB的图片");
+      return;
     }
+    
+    // 使用简单的方式处理图片，避免复杂的图像处理
+    const reader = new FileReader();
+    reader.onload = () => {
+      const result = reader.result;
+      if (typeof result === 'string') {
+        setPhotoUrl(result);
+        setEmoji(""); // 清空表情符号，使用照片
+      }
+    };
+    reader.onerror = () => {
+      alert("读取图片失败，请重试");
+    };
+    reader.readAsDataURL(file);
   };
 
   return (

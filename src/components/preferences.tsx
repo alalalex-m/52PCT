@@ -1,8 +1,9 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   Plus, Star, Trash2, ChevronRight, Coffee, Wine, CandyCane, 
-  Shirt, Music, Dumbbell, MapPin, Sparkles, Film, BookOpen, Palette 
+  Shirt, Music, Dumbbell, MapPin, Sparkles, Film, BookOpen, Palette, Store,
+  ThumbsUp, ThumbsDown
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -13,6 +14,7 @@ import { Badge } from "@/components/ui/badge";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Person, PREFERENCE_CATEGORIES, PreferenceCategory } from "@/types";
 import { uid } from "@/lib/utils";
+import { PreferenceSlider } from "@/components/preference-slider";
 
 interface PreferencesProps {
   active: Person;
@@ -32,17 +34,25 @@ const ICON_MAP = {
   Film,
   BookOpen,
   Palette,
+  Store,
   Sparkles
 };
 
 export function Preferences({ active, onUpdate }: PreferencesProps) {
   const [adding, setAdding] = useState(false);
+  const [isClient, setIsClient] = useState(false);
   const [form, setForm] = useState({ 
     category: "food" as PreferenceCategory, 
     label: "", 
     note: "", 
-    importance: 3 
+    importance: 3,
+    liked: true
   });
+  
+  // 确保组件只在客户端渲染
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   const grouped = useMemo(() => {
     const groups: Record<string, typeof active.preferences> = {};
@@ -111,97 +121,147 @@ export function Preferences({ active, onUpdate }: PreferencesProps) {
                 />
               </div>
             </div>
-            <div className="flex items-center justify-between mt-3">
-              <div className="flex items-center gap-2">
-                <Label className="text-sm">重要程度</Label>
-                <div className="flex items-center gap-1">
-                  {[1, 2, 3, 4, 5].map((n) => (
+            <div className="flex flex-col gap-3 mt-3">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Label className="text-sm">喜欢/不喜欢</Label>
+                  <div className="flex items-center gap-2">
                     <button
-                      key={n}
-                      onClick={() => setForm({ ...form, importance: n })}
-                      className={`h-8 w-8 rounded-full grid place-items-center border transition ${
-                        form.importance >= n
+                      onClick={() => setForm({ ...form, liked: true })}
+                      className={`h-8 px-3 rounded-full flex items-center gap-1 border transition ${
+                        form.liked
+                          ? "bg-emerald-500/20 border-emerald-400"
+                          : "border-white/40 dark:border-white/10 hover:bg-white/30"
+                      }`}
+                    >
+                      <ThumbsUp className={`h-4 w-4 ${form.liked ? "text-emerald-500" : "opacity-60"}`} />
+                      <span className={`text-xs ${form.liked ? "text-emerald-500" : "opacity-60"}`}>喜欢</span>
+                    </button>
+                    <button
+                      onClick={() => setForm({ ...form, liked: false })}
+                      className={`h-8 px-3 rounded-full flex items-center gap-1 border transition ${
+                        !form.liked
                           ? "bg-rose-500/20 border-rose-400"
                           : "border-white/40 dark:border-white/10 hover:bg-white/30"
                       }`}
                     >
-                      <Star className={`h-4 w-4 ${form.importance >= n ? "fill-rose-500 text-rose-500" : "opacity-60"}`} />
+                      <ThumbsDown className={`h-4 w-4 ${!form.liked ? "text-rose-500" : "opacity-60"}`} />
+                      <span className={`text-xs ${!form.liked ? "text-rose-500" : "opacity-60"}`}>不喜欢</span>
                     </button>
-                  ))}
+                  </div>
                 </div>
               </div>
-              <div className="flex gap-2">
-                <Button variant="ghost" onClick={() => setAdding(false)}>
-                  取消
-                </Button>
-                <Button
-                  onClick={() => {
-                    if (!form.label.trim()) return;
-                    onUpdate((p) => ({ 
-                      preferences: [...p.preferences, { id: uid(), ...form, label: form.label.trim() }] 
-                    }));
-                    setForm({ category: "food", label: "", note: "", importance: 3 });
-                    setAdding(false);
-                  }}
-                >
-                  保存
-                </Button>
+              
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Label className="text-sm">重要程度</Label>
+                  <div className="flex items-center gap-1">
+                    {[1, 2, 3, 4, 5].map((n) => (
+                      <button
+                        key={n}
+                        onClick={() => setForm({ ...form, importance: n })}
+                        className={`h-8 w-8 rounded-full grid place-items-center border transition ${
+                          form.importance >= n
+                            ? "bg-rose-500/20 border-rose-400"
+                            : "border-white/40 dark:border-white/10 hover:bg-white/30"
+                        }`}
+                      >
+                        <Star className={`h-4 w-4 ${form.importance >= n ? "fill-rose-500 text-rose-500" : "opacity-60"}`} />
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <div className="flex gap-2">
+                  <Button variant="ghost" onClick={() => setAdding(false)}>
+                    取消
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      if (!form.label.trim()) return;
+                      onUpdate((p) => ({ 
+                        preferences: [...p.preferences, { id: uid(), ...form, label: form.label.trim() }] 
+                      }));
+                      setForm({ category: "food", label: "", note: "", importance: 3, liked: true });
+                      setAdding(false);
+                    }}
+                  >
+                    保存
+                  </Button>
+                </div>
               </div>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {PREFERENCE_CATEGORIES.map((cat) => {
-          const IconComponent = getIcon(cat.icon);
-          
-          return (
-            <Card key={cat.id} className="bg-white/60 dark:bg-white/5 border-white/40 dark:border-white/10 card-hover">
-              <CardHeader className="flex flex-row items-center justify-between">
-                <CardTitle className="text-base flex items-center gap-2">
-                  <IconComponent className="h-4 w-4" />
-                  {cat.label}
-                </CardTitle>
-                <Badge variant="outline">{grouped[cat.id]?.length || 0}</Badge>
-              </CardHeader>
-              <CardContent className="space-y-2">
-                {grouped[cat.id]?.length ? (
-                  grouped[cat.id].map((item) => (
-                    <div
-                      key={item.id}
-                      className="flex items-start gap-3 rounded-xl p-3 bg-gradient-to-br from-white/70 to-white/40 dark:from-white/10 dark:to-white/5 border border-white/40 dark:border-white/10"
-                    >
-                      <div className="mt-1">
-                        <Star className="h-4 w-4 opacity-60" />
+      {isClient ? (
+        <PreferenceSlider title="个人偏好分类">
+          {PREFERENCE_CATEGORIES.map((cat) => {
+            const IconComponent = getIcon(cat.icon);
+            
+            return (
+              <Card key={cat.id} className="bg-white/60 dark:bg-white/5 border-white/40 dark:border-white/10 card-hover h-full">
+                <CardHeader className="flex flex-row items-center justify-between">
+                  <CardTitle className="text-base flex items-center gap-2">
+                    <IconComponent className="h-4 w-4" />
+                    {cat.label}
+                  </CardTitle>
+                  <Badge variant="outline">{grouped[cat.id]?.length || 0}</Badge>
+                </CardHeader>
+                <CardContent className="space-y-2 max-h-[300px] overflow-y-auto">
+                  {grouped[cat.id]?.length ? (
+                    grouped[cat.id].map((item) => (
+                      <div
+                        key={item.id}
+                        className={`flex items-start gap-3 rounded-xl p-3 bg-gradient-to-br ${
+                          item.liked 
+                            ? "from-white/70 to-white/40 dark:from-white/10 dark:to-white/5" 
+                            : "from-rose-50/70 to-rose-50/40 dark:from-rose-900/10 dark:to-rose-900/5"
+                        } border ${
+                          item.liked 
+                            ? "border-white/40 dark:border-white/10" 
+                            : "border-rose-200/40 dark:border-rose-800/10"
+                        }`}
+                      >
+                        <div className="mt-1">
+                          {item.liked ? (
+                            <ThumbsUp className="h-4 w-4 text-emerald-500" />
+                          ) : (
+                            <ThumbsDown className="h-4 w-4 text-rose-500" />
+                          )}
+                        </div>
+                        <div className="flex-1">
+                          <div className="font-medium leading-tight">{item.label}</div>
+                          {item.note && (
+                            <div className="text-sm opacity-80 whitespace-pre-wrap">{item.note}</div>
+                          )}
+                        </div>
+                        <div className="flex gap-1">
+                          <Button 
+                            size="icon" 
+                            variant="ghost" 
+                            onClick={() => onUpdate((p) => ({ 
+                              preferences: p.preferences.filter((x) => x.id !== item.id) 
+                            }))}
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </div>
                       </div>
-                      <div className="flex-1">
-                        <div className="font-medium leading-tight">{item.label}</div>
-                        {item.note && (
-                          <div className="text-sm opacity-80 whitespace-pre-wrap">{item.note}</div>
-                        )}
-                      </div>
-                      <div className="flex gap-1">
-                        <Button 
-                          size="icon" 
-                          variant="ghost" 
-                          onClick={() => onUpdate((p) => ({ 
-                            preferences: p.preferences.filter((x) => x.id !== item.id) 
-                          }))}
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </div>
-                  ))
-                ) : (
-                  <p className="text-sm opacity-60">尚未保存{cat.label}</p>
-                )}
-              </CardContent>
-            </Card>
-          );
-        })}
-      </div>
+                    ))
+                  ) : (
+                    <p className="text-sm opacity-60">尚未保存{cat.label}</p>
+                  )}
+                </CardContent>
+              </Card>
+            );
+          })}
+        </PreferenceSlider>
+      ) : (
+        <div className="h-[300px] flex items-center justify-center">
+          <p className="text-sm opacity-60">加载中...</p>
+        </div>
+      )}
     </div>
   );
 } 
