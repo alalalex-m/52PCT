@@ -33,9 +33,16 @@ export function HeroCard({ active, onUpdate }: HeroCardProps) {
             initial={{ scale: 0.9, rotate: -5 }}
             animate={{ scale: 1, rotate: 0 }}
             transition={{ type: "spring", stiffness: 180, damping: 12 }}
-            className="text-3xl"
+            className={emoji.startsWith('data:image') ? "w-12 h-12" : "text-3xl"}
           >
-            {emoji}
+            {emoji.startsWith('data:image') ? (
+              <div 
+                className="w-12 h-12 rounded-full overflow-hidden bg-cover bg-center"
+                style={{ backgroundImage: `url(${emoji})` }}
+              />
+            ) : (
+              emoji
+            )}
           </motion.div>
           {!editing ? (
             <div className="flex-1">

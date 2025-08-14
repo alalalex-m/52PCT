@@ -46,29 +46,32 @@ export function AddPerson({ onAdd }: AddPersonProps) {
     setOpen(false);
   };
 
-  // 处理图片上传并调整大小
+  // 处理图片上传
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
     
-    // 检查文件大小，限制为1MB
-    if (file.size > 1024 * 1024) {
-      alert("图片太大，请选择小于1MB的图片");
+    // 检查文件大小，限制为500KB
+    if (file.size > 500 * 1024) {
+      alert("图片太大，请选择小于500KB的图片");
       return;
     }
     
-    // 使用简单的方式处理图片，避免复杂的图像处理
+    // 简单读取文件
     const reader = new FileReader();
-    reader.onload = () => {
-      const result = reader.result;
-      if (typeof result === 'string') {
-        setPhotoUrl(result);
+    
+    reader.onload = (event) => {
+      if (typeof event.target?.result === 'string') {
+        // 直接设置小图片的URL
+        setPhotoUrl(event.target.result);
         setEmoji(""); // 清空表情符号，使用照片
       }
     };
+    
     reader.onerror = () => {
       alert("读取图片失败，请重试");
     };
+    
     reader.readAsDataURL(file);
   };
 
@@ -109,10 +112,10 @@ export function AddPerson({ onAdd }: AddPersonProps) {
                 />
                 {photoUrl && (
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <img 
-                      src={photoUrl} 
-                      alt="照片" 
-                      className="h-8 w-8 object-cover rounded-full"
+                    <div 
+                      className="h-8 w-8 rounded-full overflow-hidden bg-cover bg-center"
+                      style={{ backgroundImage: `url(${photoUrl})` }}
+                      aria-label="用户照片"
                     />
                   </div>
                 )}

@@ -136,7 +136,14 @@ function App() {
                             : "hover:bg-rose-500/5"
                         }`}
                       >
-                        <span className="text-xl">{p.emoji || "🧑"}</span>
+                        {p.emoji.startsWith('data:image') ? (
+                          <div 
+                            className="w-7 h-7 rounded-full overflow-hidden bg-cover bg-center"
+                            style={{ backgroundImage: `url(${p.emoji})` }}
+                          />
+                        ) : (
+                          <span className="text-xl">{p.emoji || "🧑"}</span>
+                        )}
                         <div className="flex-1 text-left">
                           <div className="font-medium leading-tight flex items-center gap-2">
                             {p.name}

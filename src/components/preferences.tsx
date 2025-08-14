@@ -195,12 +195,12 @@ export function Preferences({ active, onUpdate }: PreferencesProps) {
       </AnimatePresence>
 
       {isClient ? (
-        <PreferenceSlider title="个人偏好分类">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {PREFERENCE_CATEGORIES.map((cat) => {
             const IconComponent = getIcon(cat.icon);
             
             return (
-              <Card key={cat.id} className="bg-white/60 dark:bg-white/5 border-white/40 dark:border-white/10 card-hover h-full">
+              <Card key={cat.id} className="bg-white/60 dark:bg-white/5 border-white/40 dark:border-white/10 card-hover">
                 <CardHeader className="flex flex-row items-center justify-between">
                   <CardTitle className="text-base flex items-center gap-2">
                     <IconComponent className="h-4 w-4" />
@@ -213,21 +213,21 @@ export function Preferences({ active, onUpdate }: PreferencesProps) {
                     grouped[cat.id].map((item) => (
                       <div
                         key={item.id}
-                        className={`flex items-start gap-3 rounded-xl p-3 bg-gradient-to-br ${
+                        className={`flex items-start gap-3 rounded-xl p-3 ${
                           item.liked 
-                            ? "from-white/70 to-white/40 dark:from-white/10 dark:to-white/5" 
-                            : "from-rose-50/70 to-rose-50/40 dark:from-rose-900/10 dark:to-rose-900/5"
-                        } border ${
+                            ? "bg-gradient-to-r from-emerald-50 to-emerald-100 dark:from-emerald-950/30 dark:to-emerald-900/20" 
+                            : "bg-gradient-to-r from-rose-50 to-rose-100 dark:from-rose-950/30 dark:to-rose-900/20"
+                        } border-l-4 ${
                           item.liked 
-                            ? "border-white/40 dark:border-white/10" 
-                            : "border-rose-200/40 dark:border-rose-800/10"
+                            ? "border-emerald-500" 
+                            : "border-rose-500"
                         }`}
                       >
                         <div className="mt-1">
                           {item.liked ? (
-                            <ThumbsUp className="h-4 w-4 text-emerald-500" />
+                            <ThumbsUp className="h-5 w-5 text-emerald-600 fill-emerald-500" />
                           ) : (
-                            <ThumbsDown className="h-4 w-4 text-rose-500" />
+                            <ThumbsDown className="h-5 w-5 text-rose-600 fill-rose-500" />
                           )}
                         </div>
                         <div className="flex-1">
@@ -256,7 +256,7 @@ export function Preferences({ active, onUpdate }: PreferencesProps) {
               </Card>
             );
           })}
-        </PreferenceSlider>
+        </div>
       ) : (
         <div className="h-[300px] flex items-center justify-center">
           <p className="text-sm opacity-60">加载中...</p>
