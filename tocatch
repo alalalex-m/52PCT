@@ -1,0 +1,8 @@
+❚  🔍 检测到网关 API 请求: https://gw-app-gateway.gwmapp-h.com/app-api/api/v3.0/vehicle/one-touch/mode?vin=LGWEFUK69NK408870
+❚  📱 车辆 VIN: LGWEFUK69NK408870
+❚  🔑 找到 beanId: 3551438122679631872
+❚  🔑 找到 bt-auth-sign: c3badfe5ae559294f38d40b01ec47870...
+❚  🔑 找到 accessToken: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJnd21CcmFuZ...
+❚  🔑 找到 bt-auth-timestamp: 1777514260473
+❚  🔑 找到 bt-auth-nonce: ype7blgniw2c9svx
+❚  ✅ 网关 Token 抓取成功！更新时间: 2026/4/30 09:57:41
