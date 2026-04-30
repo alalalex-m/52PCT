@@ -1,8 +1,6 @@
-❚  🔍 检测到网关 API 请求: https://gw-app-gateway.gwmapp-h.com/app-api/api/v3.0/vehicle/one-touch/mode?vin=LGWEFUK69NK408870
-❚  📱 车辆 VIN: LGWEFUK69NK408870
-❚  🔑 找到 beanId: 3551438122679631872
-❚  🔑 找到 bt-auth-sign: c3badfe5ae559294f38d40b01ec47870...
-❚  🔑 找到 accessToken: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJnd21CcmFuZ...
-❚  🔑 找到 bt-auth-timestamp: 1777514260473
-❚  🔑 找到 bt-auth-nonce: ype7blgniw2c9svx
-❚  ✅ 网关 Token 抓取成功！更新时间: 2026/4/30 09:57:41
+accessToken: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJnd21CcmFuZCI6IkNDRzAwMSIsImd3SWQiOiIzNTUxNDM4MTIyNjc5NjMxODcyIiwicm9sZUNvZGUiOiJhZG1pbiIsImJlYW5JZCI6IjM1NTE0MzgxMjI2Nzk2MzE4NzIiLCJzc29JZCI6IlUxNDgyNjc4MTc3NDM5NjkwNzUyIiwiaWF0IjoxNzc3NDU4OTY5LCJqd3RfdHlwZSI6MSwia2V5IjoiYmVhbi1hcHAtdXNlci1rZXkiLCJleHAiOjE3NzgwNjM3NjksImd3bVJzIjoiMiIsImNoYW5uZWwiOiI0QTlBNDUzRC01RkQxLTQzM0UtQjBDNS0zODUyNTFFMUQzRTQiLCJpc3MiOiJnd3QgU2VydmVyIiwiand0VHlwZSI6MX0.AKPIOZoPP0g5auChCTq3dkOGrjz6IXLzpT3t3413DDb5qvX4-lyg39GsAwuS--uTpS0jXN4VkmGiziJHVUJWnjKKn_Aonn0rXlIOcpwWVvs7Qp1EH8xPTBUEApPHhlUyz2yInqd-gQheHFMIjMg0qYEVkeH3BSubtJB52_v9EkV2Z7hEDC-co5HEElj5hsd1dF_FJEUQT6FPgpNNzcaBs6NWVxfBdHYQnxCksJWiqW16SrI3KvbBrSVBfNYnFoCPQsjBOp7njJQnN3lBYx5hhVWl_KORDdJ1uWDvlhlpdFVPlK4t-PUcp_7CKYefcGj72s08rjC8NkHpAk9GtqJ7ZVCs2OxZZug
+beanId: 3551438122679631872
+bt-auth-sign: b79d4dbd7ceea3e90a92d49df115ec6d6c5592b1122a0ad808f9a9151a74d58f
+bt-auth-timestamp: 1777519910582
+bt-auth-nonce: yg6rsyktcp6q0lxi
+更新时间: 2026/4/30 11:31:51
